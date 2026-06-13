@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopKart – India's Fastest Online Shopping</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a}
+  a{text-decoration:none;color:inherit}
+
+  /* Topbar */
+  .topbar{background:#1a1a2e;color:#ccc;padding:6px 24px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+
+  /* Navbar */
+  .navbar{background:#fff;border-bottom:1px solid #e8e8e8;padding:0 24px;display:flex;align-items:center;gap:16px;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+  .logo{font-size:24px;font-weight:700;color:#e63946;letter-spacing:-1px;white-space:nowrap;cursor:pointer}
+  .logo span{color:#1a1a2e}
+  .search-bar{flex:1;display:flex;max-width:560px;border:2px solid #e63946;border-radius:8px;overflow:hidden}
+  .search-bar input{flex:1;border:none;outline:none;padding:10px 16px;font-size:14px;background:#fff;color:#1a1a1a}
+  .search-bar button{background:#e63946;color:#fff;border:none;padding:10px 20px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px}
+  .search-bar button:hover{background:#c9303b}
+  .nav-actions{display:flex;gap:10px;align-items:center;margin-left:auto}
+  .nav-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;color:#1a1a1a;position:relative;font-family:inherit}
+  .nav-btn:hover{background:#f5f5f5;border-color:#bbb}
+  .cart-badge{background:#e63946;color:#fff;border-radius:50%;font-size:10px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;position:absolute;top:-7px;right:-7px;font-weight:700}
+
+  /* Category Bar */
+  .category-bar{background:#fff;border-bottom:1px solid #e8e8e8;padding:0 24px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+  .category-bar::-webkit-scrollbar{display:none}
+  .cat-btn{background:none;border:none;padding:12px 16px;cursor:pointer;font-size:13px;color:#555;white-space:nowrap;border-bottom:2px solid transparent;font-family:inherit;transition:color 0.15s}
+  .cat-btn:hover,.cat-btn.active{color:#e63946;border-bottom-color:#e63946}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:40px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .hero-text h1{font-size:32px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:10px}
+  .hero-text p{color:#aaa;font-size:15px;margin-bottom:20px}
+  .hero-cta{background:#e63946;color:#fff;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;font-family:inherit;transition:background 0.15s}
+  .hero-cta:hover{background:#c9303b}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .badge{background:rgba(255,255,255,0.12);color:#ddd;font-size:12px;padding:5px 12px;border-radius:20px}
+
+  /* Offer Strip */
+  .offers-strip{display:flex;gap:12px;overflow-x:auto;padding:20px 24px;scrollbar-width:none}
+  .offers-strip::-webkit-scrollbar{display:none}
+  .offer-card{min-width:210px;background:#fff4f5;border:1px solid #ffd0d3;border-radius:12px;padding:14px 18px;flex-shrink:0;cursor:pointer;transition:transform 0.15s}
+  .offer-card:hover{transform:translateY(-2px)}
+  .offer-card h4{font-size:13px;font-weight:600;color:#e63946;margin-bottom:4px}
+  .offer-card p{font-size:12px;color:#666}
+
+  /* Sections */
+  .section{padding:24px 24px}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .section-header h2{font-size:20px;font-weight:600}
+
+  /* Categories Grid */
+  .categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
+  .cat-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:border-color 0.15s,transform 0.15s}
+  .cat-card:hover{border-color:#e63946;transform:translateY(-2px)}
+  .cat-card .cat-icon{font-size:32px;margin-bottom:8px}
+  .cat-card p{font-size:12px;color:#555;font-weight:500}
+
+  /* Products Grid */
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+  .product-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s}
+  .product-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
+  .product-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:58px;background:#f8f8f8}
+  .product-info{padding:12px}
+  .product-brand{font-size:11px;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px}
+  .product-name{font-size:13px;font-weight:500;margin-bottom:8px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:36px}
+  .product-price{font-size:16px;font-weight:700;color:#e63946}
+  .product-mrp{font-size:11px;color:#aaa;text-decoration:line-through;margin-left:4px}
+  .product-discount{font-size:11px;color:#2d9e4e;font-weight:600;margin-left:4px}
+  .product-rating{font-size:11px;color:#f4a52b;margin-top:6px}
+  .add-btn{width:100%;background:#fff;border:1.5px solid #e63946;color:#e63946;border-radius:8px;padding:7px;cursor:pointer;font-size:12px;font-weight:600;margin-top:10px;font-family:inherit;transition:background 0.15s,color 0.15s}
+  .add-btn:hover{background:#e63946;color:#fff}
+  .qty-ctrl{display:flex;align-items:center;justify-content:space-between;border:1.5px solid #e63946;border-radius:8px;margin-top:10px;overflow:hidden}
+  .qty-btn{background:none;border:none;padding:5px 12px;cursor:pointer;font-size:18px;color:#e63946;font-weight:700;font-family:inherit;transition:background 0.15s}
+  .qty-btn:hover{background:#fff0f1}
+  .qty-num{font-size:14px;font-weight:600;color:#1a1a1a}
+
+  /* Cart Overlay */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-start;justify-content:flex-end}
+  .overlay.open{display:flex}
+  .cart-panel{background:#fff;width:360px;height:100vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 20px rgba(0,0,0,0.15)}
+  .cart-header{padding:18px 20px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:center}
+  .cart-header h3{font-size:17px;font-weight:600}
+  .close-btn{background:none;border:none;cursor:pointer;font-size:22px;color:#888;font-family:inherit;line-height:1}
+  .close-btn:hover{color:#1a1a1a}
+  .cart-items{flex:1;overflow-y:auto;padding:16px}
+  .cart-item{display:flex;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f0f0f0}
+  .cart-item-img{font-size:34px;width:54px;height:54px;background:#f8f8f8;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .cart-item-info{flex:1;min-width:0}
+  .cart-item-name{font-size:13px;font-weight:500;margin-bottom:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .cart-item-price{font-size:14px;color:#e63946;font-weight:700}
+  .cart-qty{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .cq-btn{background:#f5f5f5;border:1px solid #ddd;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-family:inherit}
+  .cq-btn:hover{background:#e8e8e8}
+  .cart-footer{padding:16px 20px;border-top:1px solid #e8e8e8;background:#fafafa}
+  .cart-total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;margin-bottom:6px}
+  .checkout-btn{width:100%;background:#e63946;color:#fff;border:none;border-radius:8px;padding:13px;cursor:pointer;font-size:15px;font-weight:600;font-family:inherit;margin-top:12px;transition:background 0.15s}
+  .checkout-btn:hover{background:#c9303b}
+  .empty-cart{text-align:center;padding:48px 20px;color:#aaa}
+  .empty-cart .ec-icon{font-size:52px;margin-bottom:14px}
+
+  /* Toast */
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:11px 24px;border-radius:8px;font-size:13px;z-index:400;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+  .toast.show{opacity:1}
+
+  /* Filter Bar */
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+  .filter-chip{background:#fff;border:1px solid #ddd;border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:inherit;color:#555;transition:all 0.15s}
+  .filter-chip:hover,.filter-chip.active{background:#e63946;color:#fff;border-color:#e63946}
+  .filter-label{font-size:12px;color:#888;font-weight:500}
+
+  /* Footer */
+  .footer{background:#1a1a2e;color:#aaa;padding:32px 24px;margin-top:40px}
+  .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px;margin-bottom:24px}
+  .footer h4{color:#fff;font-size:14px;font-weight:600;margin-bottom:10px}
+  .footer p,.footer a{font-size:13px;color:#aaa;display:block;margin-bottom:6px;cursor:pointer}
+  .footer a:hover{color:#fff}
+  .footer-bottom{border-top:1px solid #2e2e4e;padding-top:20px;text-align:center;font-size:12px}
+
+  /* No results */
+  .no-results{grid-column:1/-1;text-align:center;padding:48px 20px;color:#aaa}
+  .no-results div{font-size:48px;margin-bottom:14px}
+
+  @media(max-width:600px){
+    .topbar span:last-child{display:none}
+    .hero-text h1{font-size:22px}
+    .products-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+    .cart-panel{width:100vw}
+    .navbar{padding:0 12px}
+    .section{padding:16px 12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery on orders above ₹499</span>
+  <span>⚡ 10-minute express delivery available in select cities</span>
+</div>
+
+<nav class="navbar">
+  <div class="logo" onclick="resetAll()">Shop<span>Kart</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products, brands and more..." oninput="handleSearch(this.value)">
+    <button onclick="handleSearch(document.getElementById('searchInput').value)"><i class="ti ti-search"></i> Search</button>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-btn" onclick="toggleCart()">
+      <i class="ti ti-shopping-cart"></i> Cart
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="nav-btn" onclick="showToast('Sign in coming soon!')"><i class="ti ti-user"></i> Sign in</button>
+  </div>
+</nav>
+
+<div class="category-bar" id="catBar"></div>
+
+<div id="mainContent"></div>
+
+<div class="overlay" id="cartOverlay" onclick="closeCartOutside(event)">
+  <div class="cart-panel" onclick="event.stopPropagation()">
+    <div class="cart-header">
+      <h3>🛒 Your Cart</h3>
+      <button class="close-btn" onclick="toggleCart()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = [
+  {id:1,name:"OnePlus Nord CE 4 Lite 5G",brand:"OnePlus",price:19999,mrp:24999,emoji:"📱",rating:4.3,reviews:2841,category:"Electronics",tags:["mobile","phone","5g"]},
+  {id:2,name:"boAt Airdopes 141 TWS Earbuds",brand:"boAt",price:1299,mrp:4990,emoji:"🎧",rating:4.1,reviews:89032,category:"Electronics",tags:["earphones","audio","bluetooth"]},
+  {id:3,name:'Samsung 43" Crystal 4K Smart TV',brand:"Samsung",price:29990,mrp:54900,emoji:"📺",rating:4.4,reviews:5120,category:"Electronics",tags:["tv","television","4k"]},
+  {id:4,name:"HP Pavilion Laptop 15",brand:"HP",price:54990,mrp:72990,emoji:"💻",rating:4.2,reviews:1923,category:"Electronics",tags:["laptop","computer","windows"]},
+  {id:5,name:"Mi Smart Band 8",brand:"Xiaomi",price:3499,mrp:4999,emoji:"⌚",rating:4.3,reviews:18400,category:"Electronics",tags:["smartband","fitness","wearable"]},
+  {id:6,name:"Realme Buds Air 5",brand:"Realme",price:2499,mrp:4999,emoji:"🎵",rating:4.2,reviews:9800,category:"Electronics",tags:["earbuds","anc","wireless"]},
+  {id:7,name:"Surf Excel Matic Top Load 3kg",brand:"Surf Excel",price:349,mrp:499,emoji:"🧺",rating:4.5,reviews:41200,category:"Grocery",tags:["detergent","washing","cleaning"]},
+  {id:8,name:"Tata Salt 1kg",brand:"Tata",price:28,mrp:32,emoji:"🧂",rating:4.6,reviews:91000,category:"Grocery",tags:["salt","kitchen","daily"]},
+  {id:9,name:"Aashirvaad Atta 10kg",brand:"Aashirvaad",price:410,mrp:490,emoji:"🌾",rating:4.5,reviews:55000,category:"Grocery",tags:["atta","flour","wheat"]},
+  {id:10,name:"Amul Butter 500g",brand:"Amul",price:275,mrp:290,emoji:"🧈",rating:4.7,reviews:72000,category:"Grocery",tags:["butter","dairy","bread"]},
+  {id:11,name:"Maggi 2-Minute Noodles 12 pack",brand:"Nestlé",price:149,mrp:180,emoji:"🍜",rating:4.6,reviews:120000,category:"Grocery",tags:["noodles","instant","snack"]},
+  {id:12,name:"Dabur Honey 500g",brand:"Dabur",price:199,mrp:249,emoji:"🍯",rating:4.5,reviews:48000,category:"Grocery",tags:["honey","natural","health"]},
+  {id:13,name:"Nike Air Max SYSTM Sneakers",brand:"Nike",price:7595,mrp:10995,emoji:"👟",rating:4.3,reviews:3200,category:"Fashion",tags:["shoes","sneakers","sports"]},
+  {id:14,name:"Levi's 511 Slim Fit Jeans",brand:"Levi's",price:2999,mrp:5999,emoji:"👖",rating:4.4,reviews:18700,category:"Fashion",tags:["jeans","pants","casual"]},
+  {id:15,name:"Peter England Formal Shirt",brand:"Peter England",price:899,mrp:1799,emoji:"👔",rating:4.2,reviews:9400,category:"Fashion",tags:["shirt","formal","office"]},
+  {id:16,name:"Puma Sports T-Shirt",brand:"Puma",price:599,mrp:1299,emoji:"👕",rating:4.1,reviews:14200,category:"Fashion",tags:["tshirt","sports","gym"]},
+  {id:17,name:"Prestige Iris 750W Mixer Grinder",brand:"Prestige",price:2699,mrp:4500,emoji:"🍹",rating:4.3,reviews:7800,category:"Home",tags:["mixer","grinder","kitchen"]},
+  {id:18,name:"Milton Thermosteel Flask 1L",brand:"Milton",price:699,mrp:999,emoji:"🍶",rating:4.5,reviews:32000,category:"Home",tags:["flask","bottle","steel"]},
+  {id:19,name:"Pigeon Non-Stick Cookware Set",brand:"Pigeon",price:1299,mrp:2499,emoji:"🍳",rating:4.2,reviews:12100,category:"Home",tags:["cookware","kitchen","non-stick"]},
+  {id:20,name:"Philips Air Purifier AC1215",brand:"Philips",price:8999,mrp:14999,emoji:"💨",rating:4.4,reviews:4200,category:"Home",tags:["air purifier","hepa","clean"]},
+  {id:21,name:"L'Oreal Paris Serum Foundation",brand:"L'Oreal",price:799,mrp:1299,emoji:"💄",rating:4.1,reviews:23400,category:"Beauty",tags:["makeup","foundation","face"]},
+  {id:22,name:"Mamaearth Vitamin C Face Serum",brand:"Mamaearth",price:499,mrp:799,emoji:"✨",rating:4.3,reviews:41000,category:"Beauty",tags:["serum","vitamin c","skincare"]},
+  {id:23,name:"Dove Shampoo 650ml",brand:"Dove",price:349,mrp:499,emoji:"🧴",rating:4.4,reviews:65000,category:"Beauty",tags:["shampoo","hair","damage repair"]},
+  {id:24,name:"Nivea Moisturizing Cream 200ml",brand:"Nivea",price:199,mrp:299,emoji:"🫙",rating:4.5,reviews:89000,category:"Beauty",tags:["moisturizer","skin","cream"]},
+  {id:25,name:"Funskool Pictionary Game",brand:"Funskool",price:599,mrp:999,emoji:"🎲",rating:4.3,reviews:4200,category:"Toys",tags:["game","boardgame","family"]},
+  {id:26,name:"Lego Classic Creative Bricks",brand:"Lego",price:2499,mrp:3299,emoji:"🧱",rating:4.7,reviews:8900,category:"Toys",tags:["lego","building","creative"]},
+  {id:27,name:"Yoga Mat 6mm Anti-Slip",brand:"Decathlon",price:799,mrp:1299,emoji:"🧘",rating:4.4,reviews:19000,category:"Sports",tags:["yoga","fitness","exercise"]},
+  {id:28,name:"Boldfit Protein Shaker 700ml",brand:"Boldfit",price:299,mrp:599,emoji:"🥤",rating:4.2,reviews:28000,category:"Sports",tags:["gym","shaker","protein"]},
+  {id:29,name:"Adidas Running Shoes Ultraboost",brand:"Adidas",price:8999,mrp:14999,emoji:"🏃",rating:4.5,reviews:6700,category:"Sports",tags:["running","shoes","boost"]},
+  {id:30,name:"SG Cricket Bat Kashmir Willow",brand:"SG",price:1499,mrp:2499,emoji:"🏏",rating:4.3,reviews:3300,category:"Sports",tags:["cricket","bat","kashmir"]},
+];
+
+const CATEGORIES = ["All","Electronics","Grocery","Fashion","Home","Beauty","Toys","Sports"];
+const OFFERS = [
+  {title:"Up to 80% off Electronics",desc:"Limited time deals on phones, laptops & more"},
+  {title:"Grocery Saver Pack",desc:"Min 20% off on daily essentials"},
+  {title:"Fashion Week Sale",desc:"Top brands starting ₹299"},
+  {title:"Dhamaka Saturday",desc:"Extra ₹100 off on cart above ₹999"},
+  {title:"Beauty Bonanza",desc:"Buy 2 get 1 free on select skincare"},
+];
+
+let cart = {};
+let activeCategory = "All";
+let searchQuery = "";
+let sortBy = "default";
+
+function getDiscount(p,m){return Math.round((1-p/m)*100)}
+function stars(r){return"★".repeat(Math.floor(r))+"☆".repeat(5-Math.floor(r))}
+function fmt(p){return"₹"+p.toLocaleString("en-IN")}
+
+function addToCart(id){
+  cart[id]=(cart[id]||0)+1;
+  updateCartBadge();renderCartItems();
+  showToast("Added to cart! 🛒");
+  renderProducts();
+}
+function removeFromCart(id){
+  if(cart[id]>1)cart[id]--;
+  else delete cart[id];
+  updateCartBadge();renderCartItems();renderProducts();
+}
+function deleteFromCart(id){
+  delete cart[id];
+  updateCartBadge();renderCartItems();renderProducts();
+}
+function updateCartBadge(){
+  document.getElementById("cartBadge").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+}
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
+}
+function toggleCart(){
+  document.getElementById("cartOverlay").classList.toggle("open");
+  renderCartItems();
+}
+function closeCartOutside(e){
+  if(e.target===document.getElementById("cartOverlay"))toggleCart();
+}
+
+function renderCartItems(){
+  const el=document.getElementById("cartItems");
+  const footer=document.getElementById("cartFooter");
+  const keys=Object.keys(cart);
+  if(!keys.length){
+    el.innerHTML='<div class="empty-cart"><div class="ec-icon">🛒</div><p style="font-size:15px;font-weight:500;margin-bottom:6px">Your cart is empty</p><p style="font-size:13px">Add items to get started</p></div>';
+    footer.innerHTML='';return;
+  }
+  let subtotal=0,items=0;
+  el.innerHTML=keys.map(id=>{
+    const p=PRODUCTS.find(x=>x.id==id);
+    const q=cart[id];subtotal+=p.price*q;items+=q;
+    return`<div class="cart-item">
+      <div class="cart-item-img">${p.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name" title="${p.name}">${p.name}</div>
+        <div class="cart-item-price">${fmt(p.price)} <span style="font-size:11px;color:#aaa;font-weight:400">each</span></div>
+        <div class="cart-qty">
+          <button class="cq-btn" onclick="removeFromCart(${id})">−</button>
+          <span style="font-size:13px;font-weight:600">${q}</span>
+          <button class="cq-btn" onclick="addToCart(${id})">+</button>
+          <span style="font-size:13px;font-weight:600;margin-left:8px">${fmt(p.price*q)}</span>
+          <button class="cq-btn" style="margin-left:auto;color:#e63946" onclick="deleteFromCart(${id})" title="Remove"><i class="ti ti-trash" style="font-size:14px"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const delivery=subtotal>=499?0:49;
+  footer.innerHTML=`
+    <div style="font-size:13px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#666">Subtotal (${items} items)</span><span>${fmt(subtotal)}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#666">Delivery</span><span style="color:${delivery===0?'#2d9e4e':'#1a1a1a'}">${delivery===0?"FREE":fmt(delivery)}</span></div>
+      ${subtotal>0&&subtotal<499?`<div style="font-size:11px;color:#e63946;margin-top:4px">Add ${fmt(499-subtotal)} more for free delivery</div>`:''}
+    </div>
+    <div class="cart-total"><span>Total</span><span>${fmt(subtotal+delivery)}</span></div>
+    <button class="checkout-btn" onclick="showToast('Redirecting to checkout...')">Proceed to Checkout →</button>`;
+}
+
+function handleSearch(q){
+  searchQuery=q;
+  const grid=document.getElementById("productsGrid");
+  if(grid)renderProducts();
+}
+
+function setCategory(cat){
+  activeCategory=cat;
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));
+  const grid=document.getElementById("productsGrid");
+  if(grid)renderProducts();
+}
+
+function setSort(s){
+  sortBy=s;
+  document.querySelectorAll(".filter-chip").forEach(c=>c.classList.toggle("active",c.dataset.sort===s));
+  renderProducts();
+}
+
+function renderProducts(){
+  let filtered=PRODUCTS.filter(p=>{
+    const matchCat=activeCategory==="All"||p.category===activeCategory;
+    const q=searchQuery.toLowerCase().trim();
+    const matchSearch=!q||p.name.toLowerCase().includes(q)||p.brand.toLowerCase().includes(q)||p.tags.some(t=>t.includes(q))||p.category.toLowerCase().includes(q);
+    return matchCat&&matchSearch;
+  });
+  if(sortBy==="price_asc")filtered.sort((a,b)=>a.price-b.price);
+  else if(sortBy==="price_desc")filtered.sort((a,b)=>b.price-a.price);
+  else if(sortBy==="discount")filtered.sort((a,b)=>getDiscount(b.price,b.mrp)-getDiscount(a.price,a.mrp));
+  else if(sortBy==="rating")filtered.sort((a,b)=>b.rating-a.rating);
+
+  const grid=document.getElementById("productsGrid");
+  if(!grid)return;
+  if(!filtered.length){
+    grid.innerHTML='<div class="no-results"><div>🔍</div><p style="font-size:15px;font-weight:500;margin-bottom:6px">No products found</p><p>Try a different search or category</p></div>';
+    return;
+  }
+  grid.innerHTML=filtered.map(p=>{
+    const inCart=cart[p.id]||0;
+    return`<div class="product-card">
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-info">
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name" title="${p.name}">${p.name}</div>
+        <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:2px;margin-top:4px">
+          <span class="product-price">${fmt(p.price)}</span>
+          <span class="product-mrp">${fmt(p.mrp)}</span>
+          <span class="product-discount">${getDiscount(p.price,p.mrp)}% off</span>
+        </div>
+        <div class="product-rating">${stars(p.rating)} <span style="color:#aaa;font-size:10px">(${p.reviews.toLocaleString("en-IN")})</span></div>
+        ${inCart===0
+          ?`<button class="add-btn" onclick="addToCart(${p.id})">+ Add to Cart</button>`
+          :`<div class="qty-ctrl">
+              <button class="qty-btn" onclick="removeFromCart(${p.id})">−</button>
+              <span class="qty-num">${inCart}</span>
+              <button class="qty-btn" onclick="addToCart(${p.id})">+</button>
+            </div>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function resetAll(){
+  activeCategory="All";searchQuery="";sortBy="default";
+  document.getElementById("searchInput").value="";
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.cat==="All"));
+  renderProducts();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderMain(){
+  document.getElementById("mainContent").innerHTML=`
+  <div class="hero">
+    <div class="hero-text">
+      <h1>India's Fastest<br>Online Shopping</h1>
+      <p>10-minute express delivery • Best prices guaranteed • 1 crore+ products</p>
+      <button class="hero-cta" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+      <div class="hero-badges">
+        <span class="badge">⚡ 10-min delivery</span>
+        <span class="badge">🚚 Free over ₹499</span>
+        <span class="badge">↩️ 7-day returns</span>
+        <span class="badge">🔒 Secure payments</span>
+      </div>
+    </div>
+    <div style="font-size:120px;opacity:0.08;user-select:none">🛍️</div>
+  </div>
+
+  <div class="section" style="padding-bottom:0">
+    <div class="section-header"><h2>🏷️ Today's Top Offers</h2></div>
+  </div>
+  <div class="offers-strip">
+    ${OFFERS.map(o=>`<div class="offer-card" onclick="showToast('Offer applied! 🎉')">
+      <h4>${o.title}</h4>
+      <p>${o.desc}</p>
+    </div>`).join('')}
+  </div>
+
+  <div class="section" style="padding-bottom:0">
+    <div class="section-header"><h2>🗂️ Shop by Category</h2></div>
+    <div class="categories-grid">
+      ${[["Electronics","📱"],["Grocery","🛒"],["Fashion","👗"],["Home","🏠"],["Beauty","💅"],["Toys","🧸"],["Sports","🏋️"],["All","🛍️"]].map(([label,icon])=>`
+        <div class="cat-card" onclick="setCategory('${label}');document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
+          <div class="cat-icon">${icon}</div>
+          <p>${label}</p>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="section" id="productsSection">
+    <div class="section-header">
+      <h2>🔥 All Products</h2>
+      <select onchange="setCategory(this.value)" style="font-size:13px;border:1px solid #ddd;border-radius:8px;padding:6px 10px;background:#fff;color:#1a1a1a;cursor:pointer;font-family:inherit">
+        ${CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-label">Sort:</span>
+      <button class="filter-chip active" data-sort="default" onclick="setSort('default')">Relevance</button>
+      <button class="filter-chip" data-sort="price_asc" onclick="setSort('price_asc')">Price: Low to High</button>
+      <button class="filter-chip" data-sort="price_desc" onclick="setSort('price_desc')">Price: High to Low</button>
+      <button class="filter-chip" data-sort="discount" onclick="setSort('discount')">Best Discount</button>
+      <button class="filter-chip" data-sort="rating" onclick="setSort('rating')">Top Rated</button>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>ShopKart</h4>
+        <p>India's fastest online shopping experience with 10-minute delivery.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a onclick="showToast('Coming soon!')">About Us</a>
+        <a onclick="showToast('Coming soon!')">Careers</a>
+        <a onclick="showToast('Coming soon!')">Press</a>
+        <a onclick="showToast('Coming soon!')">Blog</a>
+      </div>
+      <div>
+        <h4>Customer Service</h4>
+        <a onclick="showToast('Coming soon!')">Help Centre</a>
+        <a onclick="showToast('Coming soon!')">Track Order</a>
+        <a onclick="showToast('Coming soon!')">Returns</a>
+        <a onclick="showToast('Coming soon!')">Contact Us</a>
+      </div>
+      <div>
+        <h4>Policies</h4>
+        <a onclick="showToast('Coming soon!')">Privacy Policy</a>
+        <a onclick="showToast('Coming soon!')">Terms of Service</a>
+        <a onclick="showToast('Coming soon!')">Refund Policy</a>
+        <a onclick="showToast('Coming soon!')">Cookie Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ShopKart. All rights reserved. | Made with ❤️ in India</p>
+    </div>
+  </footer>
+  `;
+  renderProducts();
+}
+
+function init(){
+  document.getElementById("catBar").innerHTML=CATEGORIES.map(c=>
+    `<button class="cat-btn${c==="All"?" active":""}" data-cat="${c}" onclick="setCategory('${c}')">${c}</button>`
+  ).join('');
+  renderMain();
+}
+
+init();
+</script>
+</body>
+</html>
